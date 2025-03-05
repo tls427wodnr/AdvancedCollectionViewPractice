@@ -10,7 +10,6 @@ class ViewController: UIViewController {
         return cv
     }()
     
-    // Diffable Data Source 선언
     var dataSource: UICollectionViewDiffableDataSource<Int, Int>!
 
     override func viewDidLoad() {
@@ -39,7 +38,6 @@ class ViewController: UIViewController {
         configureDataSource()
     }
     
-    // Diffable Data Source 설정
     func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, Int>(collectionView: collectionView) { collectionView, indexPath, item in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
@@ -49,19 +47,16 @@ class ViewController: UIViewController {
         
         collectionView.delegate = self
         
-        // 초기 데이터 로드
         applySnapshot(with: [])
     }
     
-    // 스냅샷 적용 메서드
     func applySnapshot(with items: [Int], animating: Bool = true) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, Int>()
-        snapshot.appendSections([0])  // 하나의 섹션만 사용
+        snapshot.appendSections([0])
         snapshot.appendItems(items, toSection: 0)
         dataSource.apply(snapshot, animatingDifferences: animating)
     }
     
-    // 데이터 추가
     @objc private func addItem() {
         myCount += 1
         var currentSnapshot = dataSource.snapshot()
@@ -71,7 +66,6 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UICollectionViewDelegate {
-    // 아이템 삭제 (선택 시 제거)
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         var currentSnapshot = dataSource.snapshot()
